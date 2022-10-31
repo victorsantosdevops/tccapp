@@ -1,7 +1,6 @@
 FROM python:3.8
 
-RUN adduser -D tcc
-USER tcc
+ENV PIP_ROOT_USER_ACTION=ignore
 
 # Creating Application Source Code Directory
 RUN mkdir -p /usr/src/app
