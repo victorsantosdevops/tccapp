@@ -10,8 +10,8 @@ WORKDIR /usr/src/app
 
 # Installing python dependencies
 COPY requirements.txt /usr/src/app/
-RUN pip install --upgrade pip
-RUN pip3 install --root-user-action=ignore --no-install-recommends --no-cache-dir -r requirements.txt
+
+RUN pip install --root-user-action=ignore --no-cache-dir -r requirements.txt
 
 # Copying src code to Container
 COPY . /usr/src/app
