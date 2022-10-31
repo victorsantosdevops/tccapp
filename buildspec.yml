@@ -1,0 +1,47 @@
+version: 0.2
+env:
+  secrets-manager:
+    DATABASE_URL: kernel-core:database_url
+    DOCKER_LOGIN: kernel-core:DOCKER_LOGIN
+    DOCKER_PASSWORD: kernel-core:DOCKER_PASSWORD
+    PORT: kernel-core:PORT
+    AUTH0_ISSUER_URL: kernel-core:AUTH0_ISSUER_URL
+    AUTH0_AUDIENCE: kernel-core:AUTH0_AUDIENCE
+    AWS_ACCESS_KEY_ID: kernel-core:AWS_ACCESS_KEY_ID
+    AWS_SECRET_ACCESS_KEY: kernel-core:AWS_SECRET_ACCESS_KEY
+    POSTMARK_TOKEN: kernel-core:POSTMARK_TOKEN
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 14
+  pre_build:
+    commands:
+      - echo `aws --version`
+      - REPOSITORY_URI=${repository_url}
+      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - echo Entered the pre_build phase...
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - |
+        docker build \
+        -t $REPOSITORY_URI:latest \
+        .
+      - docker images
+      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+      - docker images
+  post_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin $REPOSITORY_URI
+      - echo Build completed on `date`
+      - echo Pushing the Docker images...
+      - docker push $REPOSITORY_URI:latest
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - echo Writing image definitions file...
+      - printf '[{"name":"%s","imageUri":"%s"}]' $container_name $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+
+artifacts:
+  files: imagedefinitions.json
