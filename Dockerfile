@@ -27,4 +27,4 @@ EXPOSE $PORT
 VOLUME ["/app-data"]
 
 # Running Python Application
-CMD gunicorn -b :$PORT -c gunicorn.conf.py main:app
+CMD ["flask", "run", "--host", "0.0.0.0"]
