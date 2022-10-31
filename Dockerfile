@@ -11,7 +11,7 @@ WORKDIR /usr/src/app
 # Installing python dependencies
 COPY requirements.txt /usr/src/app/
 
-RUN pip install --root-user-action=ignore --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 # Copying src code to Container
 COPY . /usr/src/app
