@@ -1,10 +1,14 @@
 version: 0.2
+env:
+  DOCKER_PASSWORD: 123mudar#
+  DOCKER_LOGIN: tccpuc
 phases:
   install:
     runtime-versions:
-      nodejs: 14
+      python: 3.8
   pre_build:
     commands:
+      - docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
       - echo `aws --version`
       - REPOSITORY_URI=${repository_url}
       - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
