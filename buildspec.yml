@@ -1,16 +1,4 @@
 version: 0.2
-env:
-  secrets-manager:
-    DATABASE_URL: kernel-core:database_url
-    DOCKER_LOGIN: kernel-core:DOCKER_LOGIN
-    DOCKER_PASSWORD: kernel-core:DOCKER_PASSWORD
-    PORT: kernel-core:PORT
-    AUTH0_ISSUER_URL: kernel-core:AUTH0_ISSUER_URL
-    AUTH0_AUDIENCE: kernel-core:AUTH0_AUDIENCE
-    AWS_ACCESS_KEY_ID: kernel-core:AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY: kernel-core:AWS_SECRET_ACCESS_KEY
-    POSTMARK_TOKEN: kernel-core:POSTMARK_TOKEN
-
 phases:
   install:
     runtime-versions:
